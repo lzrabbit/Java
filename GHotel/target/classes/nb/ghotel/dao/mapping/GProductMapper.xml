@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nb.ghotel.dao.IGProductDao">
+	<select id="getProductList" parameterType="Date" resultType="GProduct">
+		SELECT * FROM GProduct WHERE AvailableDate=#{AvailableDate}
+	</select>
+	<insert id="insert" parameterType="GProduct">
+		INSERT INTO
+		GProduct(RateCode,AvailableDate,RoomTypeCode,HotelId,CurrentAllotment,SupplierType,BaseRate,Rate,Surcharge,TotalRate,CommissionableUsdTotal,CreateTime,UpdateTime,RateType,Remark)
+		VALUES(#{RateCode},#{AvailableDate},#{RoomTypeCode},#{HotelId},#{CurrentAllotment},#{SupplierType},#{BaseRate},#{Rate},#{Surcharge},#{TotalRate},#{CommissionableUsdTotal},#{CreateTime},#{UpdateTime},#{RateType},#{Remark})
+	</insert>
+	<insert id="batchInsert" parameterType="List">
+		INSERT INTO
+		GProduct(RateCode,AvailableDate,RoomTypeCode,HotelId,CurrentAllotment,SupplierType,BaseRate,Rate,Surcharge,TotalRate,CommissionableUsdTotal,CreateTime,UpdateTime,RateType,Remark)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.RateCode},#{item.AvailableDate},#{item.RoomTypeCode},#{item.HotelId},#{item.CurrentAllotment},#{item.SupplierType},#{item.BaseRate},#{item.Rate},#{item.Surcharge},#{item.TotalRate},#{item.CommissionableUsdTotal},#{item.CreateTime},#{item.UpdateTime},#{item.RateType},#{item.Remark})
+		</foreach>
+	</insert>
+	<update id="update">
+		UPDATE GProduct
+		SET
+		RateCode=#{RateCode},AvailableDate=#{AvailableDate},RoomTypeCode=#{RoomTypeCode},HotelId=#{HotelId},CurrentAllotment=#{CurrentAllotment},SupplierType=#{SupplierType},BaseRate=#{BaseRate},Rate=#{Rate},Surcharge=#{Surcharge},TotalRate=#{TotalRate},CommissionableUsdTotal=#{CommissionableUsdTotal},CreateTime=#{CreateTime},UpdateTime=#{UpdateTime},RateType=#{RateType},Remark=#{Remark}
+		WHERE ProductId=#{ProductId}
+	</update>
+	<update id="batchUpdate">
+		INSERT INTO
+		GProduct(ProductId,RateCode,AvailableDate,RoomTypeCode,HotelId,CurrentAllotment,SupplierType,BaseRate,Rate,Surcharge,TotalRate,CommissionableUsdTotal,CreateTime,UpdateTime,RateType,Remark)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.ProductId},#{item.RateCode},#{item.AvailableDate},#{item.RoomTypeCode},#{item.HotelId},#{item.CurrentAllotment},#{item.SupplierType},#{item.BaseRate},#{item.Rate},#{item.Surcharge},#{item.TotalRate},#{item.CommissionableUsdTotal},#{item.CreateTime},#{item.UpdateTime},#{item.RateType},#{item.Remark})
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		ProductId=VALUES{ProductId},RateCode=VALUES{RateCode},AvailableDate=VALUES{AvailableDate},RoomTypeCode=VALUES{RoomTypeCode},HotelId=VALUES{HotelId},CurrentAllotment=VALUES{CurrentAllotment},SupplierType=VALUES{SupplierType},BaseRate=VALUES{BaseRate},Rate=VALUES{Rate},Surcharge=VALUES{Surcharge},TotalRate=VALUES{TotalRate},CommissionableUsdTotal=VALUES{CommissionableUsdTotal},CreateTime=VALUES{CreateTime},UpdateTime=VALUES{UpdateTime},RateType=VALUES{RateType},Remark=VALUES{Remark}
+	</update>
+</mapper>
